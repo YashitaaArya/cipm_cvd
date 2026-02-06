@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tabular CVD Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="result-card">
+
+    <h1>🫀 CVD Risk Assessment</h1>
+
+    <p><strong>Age:</strong> {{ age }}</p>
+    <p><strong>Gender:</strong> {% if male == 1 %}Male{% else %}Female{% endif %}</p>
+
+    <!-- Risk Badge -->
+    {% if prediction == "Low Risk" %}
+        <div class="risk-badge low">Low Risk</div>
+    {% elif prediction == "Moderate Risk" %}
+        <div class="risk-badge moderate">Moderate Risk</div>
+    {% else %}
+        <div class="risk-badge high">High Risk</div>
+    {% endif %}
+
+    <!-- Confidence -->
+    <div class="confidence-container">
+        <p><strong>Model Confidence:</strong> {{ confidence }}%</p>
+
+        <div class="confidence-bar">
+            <div class="confidence-fill" id="confidenceFill"></div>
+        </div>
+    </div>
+
+    <!-- Explanation -->
+    <p style="margin-top: 25px;">
+        This prediction is generated using a transformer-based foundation model
+        (TabPFN) trained on structured cardiovascular risk data.
+    </p>
+
+    <br>
+    <a href="/tabular">⬅ New Prediction</a>
+
+</div>
+
+<!-- Animate confidence bar -->
+<script>
+    window.onload = function() {
+        const confidence = {{ confidence }};
+        document.getElementById("confidenceFill").style.width = confidence + "%";
+    };
+</script>
+
+</body>
+</html>

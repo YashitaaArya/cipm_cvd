@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CVD Detection Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>🫀 CVD Detection Platform</h1>
+
+    <p>
+        An AI-powered system for early and accurate cardiovascular disease detection
+        using both clinical data and cardiac MRI scans.
+    </p>
+
+    <hr>
+
+    <h2>Select Prediction Method</h2>
+
+    <button onclick="window.location.href='/tabular'">
+        Tabular CVD Prediction (TabPFN)
+    </button>
+
+    <br><br>
+
+    <button onclick="window.location.href='/imaging'">
+        MRI-based CVD Detection
+    </button>
+
+</body>
+</html>

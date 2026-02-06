@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tabular CVD Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Tabular CVD Prediction (TabPFN)</h1>
+    <form action="/predict-tabular" method="post">
+
+        <label>Age:</label><br>
+        <input type="number" name="age" required><br><br>
+
+        <label>Gender:</label><br>
+        <select name="male">
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+        </select><br><br>
+
+        <label>Education Level (1–4):</label><br>
+        <input type="number" name="education" min="1" max="4"><br><br>
+
+        <label>Current Smoker:</label><br>
+        <select name="currentSmoker">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br><br>
+
+        <label>Cigarettes per Day:</label><br>
+        <input type="number" name="cigsPerDay" value="0"><br><br>
+
+        <label>BP Medication:</label><br>
+        <select name="BPMeds">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br><br>
+
+        <label>Prevalent Stroke:</label><br>
+        <select name="prevalentStroke">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br><br>
+
+        <label>Hypertension:</label><br>
+        <select name="prevalentHyp">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br><br>
+
+        <label>Diabetes:</label><br>
+        <select name="diabetes">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br><br>
+
+        <label>Total Cholesterol:</label><br>
+        <input type="number" name="totChol" required><br><br>
+
+        <label>Systolic BP:</label><br>
+        <input type="number" name="sysBP" required><br><br>
+
+        <label>Diastolic BP:</label><br>
+        <input type="number" name="diaBP" required><br><br>
+
+        <label>BMI:</label><br>
+        <input type="number" step="0.1" name="BMI" required><br><br>
+
+        <label>Heart Rate:</label><br>
+        <input type="number" name="heartRate" required><br><br>
+
+        <label>Glucose:</label><br>
+        <input type="number" name="glucose" required><br><br>
+
+        <button type="submit">Predict CVD Risk</button>
+    </form>
+
+
+    <br>
+    <a href="/">⬅ Back to Home</a>
+
+</body>
+</html>

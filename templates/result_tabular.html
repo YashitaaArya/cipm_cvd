@@ -1,54 +1,211 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tabular CVD Result</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-<div class="result-card">
-
-    <h1>🫀 CVD Risk Assessment</h1>
-
-    <p><strong>Age:</strong> {{ age }}</p>
-    <p><strong>Gender:</strong> {% if male == 1 %}Male{% else %}Female{% endif %}</p>
-
-    <!-- Risk Badge -->
-    {% if prediction == "Low Risk" %}
-        <div class="risk-badge low">Low Risk</div>
-    {% elif prediction == "Moderate Risk" %}
-        <div class="risk-badge moderate">Moderate Risk</div>
-    {% else %}
-        <div class="risk-badge high">High Risk</div>
-    {% endif %}
-
-    <!-- Confidence -->
-    <div class="confidence-container">
-        <p><strong>Model Confidence:</strong> {{ confidence }}%</p>
-
-        <div class="confidence-bar">
-            <div class="confidence-fill" id="confidenceFill"></div>
+{% block content %}
+<div class="flashcard-container">
+    <div class="flashcard">
+        
+        <div id="calculatingPhase" class="phase-container active-phase">
+            <div class="spinner-ring"></div>
+            <h2>Compiling AI Prediction...</h2>
+            <p>Running patient parameters through TabPFN foundation model.</p>
         </div>
+
+        <div id="resultPhase" class="phase-container hidden-phase">
+            <div class="card-top">
+                <span class="time-badge" id="reportTime"></span>
+                <button onclick="window.print()" class="print-icon" title="Print Report">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                </button>
+            </div>
+
+            <div class="main-verdict">
+                <p class="verdict-label">Diagnostic Outcome</p>
+                {% if prediction == "Low Risk" %}
+                    <h1 class="verdict-title text-safe">LOW RISK</h1>
+                    <p class="verdict-sub text-safe">Patient parameters are within stable thresholds.</p>
+                {% else %}
+                    <h1 class="verdict-title text-danger">HIGH RISK</h1>
+                    <p class="verdict-sub text-danger">Cardiovascular anomalies detected. Clinical review advised.</p>
+                {% endif %}
+            </div>
+
+            <div class="mega-bar-container">
+                <div class="bar-header">
+                    <span>Model Confidence</span>
+                    <span id="confidenceCounter" class="counter-text">0%</span>
+                </div>
+                <div class="mega-track">
+                    <div class="mega-fill {% if prediction == 'Low Risk' %}fill-safe{% else %}fill-danger{% endif %}" id="megaConfidenceBar"></div>
+                </div>
+            </div>
+
+            <div class="patient-chips">
+                <div class="chip"><strong>Age</strong> {{ age }}</div>
+                <div class="chip"><strong>Sex</strong> {% if male == 1 %}M{% else %}F{% endif %}</div>
+                <div class="chip"><strong>BMI</strong> {{ BMI }}</div>
+                <div class="chip"><strong>HR</strong> {{ heartRate }}</div>
+                <div class="chip"><strong>Glu</strong> {{ glucose }}</div>
+            </div>
+
+            <div class="card-bottom">
+                <a href="/tabular" class="btn-primary full-width">Assess Another Patient</a>
+            </div>
+        </div>
+
     </div>
-
-    <!-- Explanation -->
-    <p style="margin-top: 25px;">
-        This prediction is generated using a transformer-based foundation model
-        (TabPFN) trained on structured cardiovascular risk data.
-    </p>
-
-    <br>
-    <a href="/tabular">⬅ New Prediction</a>
-
 </div>
 
-<!-- Animate confidence bar -->
-<script>
-    window.onload = function() {
-        const confidence = {{ confidence }};
-        document.getElementById("confidenceFill").style.width = confidence + "%";
-    };
-</script>
+<style>
+    .flashcard-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+        padding: 20px;
+    }
 
-</body>
-</html>
+    .flashcard {
+        background: var(--surface-color);
+        width: 100%;
+        max-width: 550px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        position: relative;
+        min-height: 450px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .phase-container {
+        padding: 40px;
+        text-align: center;
+        transition: opacity 0.5s ease;
+    }
+
+    .active-phase { display: block; opacity: 1; }
+    .hidden-phase { display: none; opacity: 0; }
+
+    /* Spinner Animation */
+    .spinner-ring {
+        width: 60px; height: 60px;
+        border: 5px solid #e2e8f0;
+        border-top-color: var(--accent-blue);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    /* Result Phase Typography */
+    .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    
+    .time-badge {
+        background: #f1f5f9; color: #64748b;
+        padding: 5px 12px; border-radius: 50px;
+        font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+    }
+
+    .print-icon {
+        background: none; border: none; color: #94a3b8; cursor: pointer; transition: color 0.2s;
+    }
+    .print-icon:hover { color: var(--accent-blue); }
+
+    .verdict-label { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .verdict-title { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin: 10px 0; }
+    .verdict-sub { font-size: 1rem; font-weight: 500; margin-bottom: 40px; }
+
+    .text-safe { color: #10b981; }
+    .text-danger { color: #ef4444; }
+
+    /* The Loading Bar */
+    .mega-bar-container {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        border: 1px solid var(--border-color);
+    }
+    .bar-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 12px; font-weight: 600; color: var(--secondary-color);
+    }
+    .counter-text { font-size: 1.25rem; }
+    
+    .mega-track {
+        height: 16px; background: #e2e8f0; border-radius: 10px; overflow: hidden;
+    }
+    .mega-fill {
+        height: 100%; width: 0; border-radius: 10px;
+        transition: width 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .fill-safe { background: linear-gradient(90deg, #34d399, #10b981); }
+    .fill-danger { background: linear-gradient(90deg, #f87171, #ef4444); }
+
+    /* Data Chips */
+    .patient-chips {
+        display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px;
+    }
+    .chip {
+        background: white; border: 1px solid var(--border-color);
+        padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; color: var(--text-main);
+    }
+    .chip strong { color: var(--text-muted); margin-right: 4px; }
+
+    .full-width { display: block; width: 100%; padding: 15px; font-size: 1.1rem; text-align: center; }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Handle potential float values for confidence safely
+        const targetConfidence = parseInt(parseFloat("{{ confidence }}") || 0);
+        
+        // 1. Set current date
+        const dateOptions = { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        document.getElementById("reportTime").textContent = new Date().toLocaleDateString('en-US', dateOptions);
+
+        // 2. Control the Loading -> Reveal sequence
+        setTimeout(() => {
+            // Hide loader, show result
+            document.getElementById('calculatingPhase').classList.remove('active-phase');
+            document.getElementById('calculatingPhase').classList.add('hidden-phase');
+            
+            const resultPhase = document.getElementById('resultPhase');
+            resultPhase.classList.remove('hidden-phase');
+            resultPhase.classList.add('active-phase');
+
+            // 3. Trigger the Progress Bar and Number Counter animation
+            setTimeout(() => {
+                document.getElementById("megaConfidenceBar").style.width = targetConfidence + "%";
+                
+                let current = 0;
+                const counterElement = document.getElementById("confidenceCounter");
+                // Calculate speed so it finishes around the same time as the CSS transition (1.5s)
+                const intervalTime = targetConfidence > 0 ? 1500 / targetConfidence : 0; 
+                
+                if(targetConfidence > 0) {
+                    const counterInterval = setInterval(() => {
+                        if (current >= targetConfidence) {
+                            clearInterval(counterInterval);
+                            counterElement.textContent = targetConfidence + "%";
+                        } else {
+                            current++;
+                            counterElement.textContent = current + "%";
+                        }
+                    }, intervalTime);
+                } else {
+                    counterElement.textContent = "0%";
+                }
+
+            }, 100); // Slight delay after reveal
+
+        }, 1500); // 1.5 seconds of suspense
+    });
+</script>
+{% endblock %}

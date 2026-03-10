@@ -1,31 +1,163 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>CVD Detection Platform</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h1>🫀 CVD Detection Platform</h1>
+{% block content %}
+<div class="home-wrapper">
 
-    <p>
-        An AI-powered system for early and accurate cardiovascular disease detection
-        using both clinical data and cardiac MRI scans.
-    </p>
+    <header class="home-hero fade-in-up">
+        <div class="research-badge">
+            <span class="pulse-dot"></span> Final Research Build v1.0
+        </div>
+        <h1 class="hero-title">Next-Generation <br><span class="text-gradient">Cardiovascular Diagnostics</span></h1>
+        <p class="hero-subtitle">
+            An advanced clinical intelligence platform leveraging Transformer-based Foundation Models (TabPFN) and Deep Convolutional Neural Networks for early disease detection and risk stratification.
+        </p>
+    </header>
 
-    <hr>
+    <section class="tech-stack fade-in-up" style="animation-delay: 0.1s;">
+        <div class="tech-card">
+            <div class="tech-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3>TabPFN Architecture</h3>
+            <p>Utilizing zero-shot tabular classification via prior-data fitted networks for rapid clinical parameter analysis.</p>
+        </div>
+        <div class="tech-card">
+            <div class="tech-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+            <h3>Deep CNN MRI</h3>
+            <p>Automated spatial feature extraction and anomaly detection from cardiac medical imaging (DICOM/PNG).</p>
+        </div>
+        <div class="tech-card">
+            <div class="tech-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <h3>Clinical Datasets</h3>
+            <p>Models trained and evaluated on robust, real-world cardiovascular clinical records for high-fidelity predictions.</p>
+        </div>
+    </section>
 
-    <h2>Select Prediction Method</h2>
+    <section class="modules-grid fade-in-up" style="animation-delay: 0.2s;">
+        
+        <a href="/tabular" class="module-link-wrapper">
+            <div class="module-card">
+                <div class="module-card-bg pattern-1"></div>
+                <div class="module-content">
+                    <div class="module-icon-large">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                    </div>
+                    <h2>Clinical Tabular Predictor</h2>
+                    <p>Input patient demographics, vitals, and laboratory results to generate a comprehensive TabPFN risk stratification report.</p>
+                    <div class="action-row">
+                        <span>Launch Predictor</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </div>
+            </div>
+        </a>
 
-    <button onclick="window.location.href='/tabular'">
-        Tabular CVD Prediction (TabPFN)
-    </button>
+        <a href="/mri" class="module-link-wrapper">
+            <div class="module-card">
+                <div class="module-card-bg pattern-2"></div>
+                <div class="module-content">
+                    <div class="module-icon-large">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    </div>
+                    <h2>MRI Diagnostic Tool</h2>
+                    <p>Upload raw cardiac MRI scans for automated deep-learning analysis and spatial anomaly detection.</p>
+                    <div class="action-row">
+                        <span>Upload Scan</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </div>
+            </div>
+        </a>
 
-    <br><br>
+    </section>
+</div>
 
-    <button onclick="window.location.href='/imaging'">
-        MRI-based CVD Detection
-    </button>
+<style>
+    .home-wrapper {
+        max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px;
+    }
 
-</body>
-</html>
+    /* Animations */
+    .fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s cubic-bezier(0.1, 0.7, 0.1, 1) forwards; }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Hero Section */
+    .home-hero { text-align: center; margin-bottom: 60px; padding-top: 20px; }
+    
+    .research-badge {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: rgba(14, 165, 233, 0.1); color: #0284c7;
+        padding: 6px 16px; border-radius: 50px; font-size: 0.85rem;
+        font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+        border: 1px solid rgba(14, 165, 233, 0.2); margin-bottom: 25px;
+    }
+    .pulse-dot { width: 8px; height: 8px; background: #0ea5e9; border-radius: 50%; box-shadow: 0 0 8px #0ea5e9; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+
+    .hero-title { font-size: 3.5rem; font-weight: 800; color: var(--primary-color); line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
+    .text-gradient { background: linear-gradient(90deg, #0ea5e9, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    .hero-subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 750px; margin: 0 auto; line-height: 1.7; }
+
+    /* Tech Stack Info Cards */
+    .tech-stack {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px; margin-bottom: 60px;
+    }
+    .tech-card {
+        background: #ffffff; padding: 30px; border-radius: 16px;
+        border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+    .tech-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); }
+    .tech-icon { background: #f0f9ff; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .tech-card h3 { color: var(--primary-color); font-size: 1.1rem; margin-bottom: 10px; }
+    .tech-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+
+    /* Interactive Modules Grid */
+    .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
+    .module-link-wrapper { text-decoration: none; display: block; }
+    
+    .module-card {
+        background: #ffffff; border-radius: 20px; overflow: hidden; position: relative;
+        border: 1px solid var(--border-color); box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); min-height: 280px; display: flex;
+    }
+    
+    .module-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        border-color: #bae6fd; box-shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.2);
+    }
+
+    /* Decorative Background Patterns */
+    .module-card-bg { position: absolute; top: 0; right: 0; bottom: 0; left: 0; opacity: 0.03; transition: opacity 0.4s ease; z-index: 0; }
+    .module-card:hover .module-card-bg { opacity: 0.08; }
+    .pattern-1 { background-image: radial-gradient(#2563eb 2px, transparent 2px); background-size: 20px 20px; }
+    .pattern-2 { background-image: linear-gradient(45deg, #0d9488 25%, transparent 25%, transparent 75%, #0d9488 75%, #0d9488), linear-gradient(45deg, #0d9488 25%, transparent 25%, transparent 75%, #0d9488 75%, #0d9488); background-size: 20px 20px; background-position: 0 0, 10px 10px; }
+
+    .module-content { padding: 40px; position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
+    
+    .module-icon-large {
+        width: 60px; height: 60px; background: var(--primary-color); color: white;
+        border-radius: 16px; display: flex; align-items: center; justify-content: center;
+        margin-bottom: 25px; transition: background 0.3s ease;
+    }
+    .module-card:hover .module-icon-large { background: var(--accent-blue); }
+
+    .module-content h2 { color: var(--primary-color); font-size: 1.5rem; margin-bottom: 12px; }
+    .module-content p { color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 30px; flex-grow: 1; }
+
+    .action-row { display: flex; align-items: center; gap: 8px; color: var(--accent-blue); font-weight: 600; font-size: 1.05rem; transition: gap 0.3s ease; }
+    .module-card:hover .action-row { gap: 15px; } /* Arrow slides to the right on hover */
+    
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+        .hero-title { font-size: 2.5rem; }
+        .modules-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}

@@ -12,9 +12,9 @@ def home():
 def tabular():
     return render_template("tabular.html")
 
-@app.route("/imaging")
-def imaging():
-    return render_template("imaging.html")
+@app.route("/mri")
+def mri():
+    return render_template("mri.html")
 
 @app.route("/predict-tabular", methods=["POST"])
 def predict_tabular_route():

@@ -1,83 +1,146 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tabular CVD Prediction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h1>Tabular CVD Prediction (TabPFN)</h1>
-    <form action="/predict-tabular" method="post">
+{% block content %}
+<div class="assessment-container">
+    <div class="form-header">
+        <h1>Tabular Clinical Assessment</h1>
+        <p>Please input the patient's clinical parameters to generate a risk stratification report.</p>
+    </div>
 
-        <label>Age:</label><br>
-        <input type="number" name="age" required><br><br>
+    <div class="form-progress">
+        <div class="progress-step active" id="step1-indicator">1. Demographics</div>
+        <div class="progress-step" id="step2-indicator">2. Lifestyle</div>
+        <div class="progress-step" id="step3-indicator">3. Vitals</div>
+        <div class="progress-step" id="step4-indicator">4. Labs</div>
+    </div>
 
-        <label>Gender:</label><br>
-        <select name="male">
-            <option value="1">Male</option>
-            <option value="0">Female</option>
-        </select><br><br>
+    <form action="/predict-tabular" method="post" id="predictionForm" class="clinical-form">
+        
+        <div class="form-step active" id="step1">
+            <fieldset class="form-section">
+                <legend>Demographics & Background</legend>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Age (Years)</label>
+                        <input type="number" name="age" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Biological Sex</label>
+                        <select name="male">
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Education Level (1–4)</label>
+                        <input type="number" name="education" min="1" max="4" required>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-actions">
+                <button type="button" class="btn-primary" onclick="nextStep(1)">Next Step &rarr;</button>
+            </div>
+        </div>
 
-        <label>Education Level (1–4):</label><br>
-        <input type="number" name="education" min="1" max="4"><br><br>
+        <div class="form-step" id="step2">
+            <fieldset class="form-section">
+                <legend>Lifestyle & History</legend>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Current Smoker</label>
+                        <select name="currentSmoker" id="smokerSelect">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Cigarettes per Day</label>
+                        <input type="number" name="cigsPerDay" value="0" id="cigsInput">
+                    </div>
+                    <div class="input-group">
+                        <label>Prevalent Stroke</label>
+                        <select name="prevalentStroke">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-actions space-between">
+                <button type="button" class="btn-secondary" onclick="prevStep(2)">&larr; Previous</button>
+                <button type="button" class="btn-primary" onclick="nextStep(2)">Next Step &rarr;</button>
+            </div>
+        </div>
 
-        <label>Current Smoker:</label><br>
-        <select name="currentSmoker">
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select><br><br>
+        <div class="form-step" id="step3">
+            <fieldset class="form-section">
+                <legend>Clinical Vitals</legend>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Hypertension</label>
+                        <select name="prevalentHyp">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>BP Medication</label>
+                        <select name="BPMeds">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Systolic BP (mmHg)</label>
+                        <input type="number" name="sysBP" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Diastolic BP (mmHg)</label>
+                        <input type="number" name="diaBP" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Heart Rate (BPM)</label>
+                        <input type="number" name="heartRate" required>
+                    </div>
+                    <div class="input-group">
+                        <label>BMI</label>
+                        <input type="number" step="0.1" name="BMI" required>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-actions space-between">
+                <button type="button" class="btn-secondary" onclick="prevStep(3)">&larr; Previous</button>
+                <button type="button" class="btn-primary" onclick="nextStep(3)">Next Step &rarr;</button>
+            </div>
+        </div>
 
-        <label>Cigarettes per Day:</label><br>
-        <input type="number" name="cigsPerDay" value="0"><br><br>
+        <div class="form-step" id="step4">
+            <fieldset class="form-section">
+                <legend>Laboratory Results</legend>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Diabetes</label>
+                        <select name="diabetes">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Total Cholesterol (mg/dL)</label>
+                        <input type="number" name="totChol" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Glucose (mg/dL)</label>
+                        <input type="number" name="glucose" required>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-actions space-between">
+                <button type="button" class="btn-secondary" onclick="prevStep(4)">&larr; Previous</button>
+                <button type="submit" class="btn-primary" id="submitBtn">Generate Risk Report</button>
+            </div>
+        </div>
 
-        <label>BP Medication:</label><br>
-        <select name="BPMeds">
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select><br><br>
-
-        <label>Prevalent Stroke:</label><br>
-        <select name="prevalentStroke">
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select><br><br>
-
-        <label>Hypertension:</label><br>
-        <select name="prevalentHyp">
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select><br><br>
-
-        <label>Diabetes:</label><br>
-        <select name="diabetes">
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select><br><br>
-
-        <label>Total Cholesterol:</label><br>
-        <input type="number" name="totChol" required><br><br>
-
-        <label>Systolic BP:</label><br>
-        <input type="number" name="sysBP" required><br><br>
-
-        <label>Diastolic BP:</label><br>
-        <input type="number" name="diaBP" required><br><br>
-
-        <label>BMI:</label><br>
-        <input type="number" step="0.1" name="BMI" required><br><br>
-
-        <label>Heart Rate:</label><br>
-        <input type="number" name="heartRate" required><br><br>
-
-        <label>Glucose:</label><br>
-        <input type="number" name="glucose" required><br><br>
-
-        <button type="submit">Predict CVD Risk</button>
     </form>
-
-
-    <br>
-    <a href="/">⬅ Back to Home</a>
-
-</body>
-</html>
+</div>
+{% endblock %}

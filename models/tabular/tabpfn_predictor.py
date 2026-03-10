@@ -12,7 +12,7 @@ def _load_model():
         return
 
     # 1. Load the original dataset
-    data = pd.read_csv("framingham_heart_study.csv")
+    data = pd.read_csv("data/framingham_heart_study.csv")
     
     # 2. Fix missing values (Fill blanks with the median of that column)
     data.fillna(data.median(), inplace=True)

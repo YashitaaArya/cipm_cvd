@@ -25,7 +25,7 @@
                     <p class="verdict-sub text-safe">Patient parameters are within stable thresholds.</p>
                 {% else %}
                     <h1 class="verdict-title text-danger">HIGH RISK</h1>
-                    <p class="verdict-sub text-danger">Cardiovascular anomalies detected. Clinical review advised.</p>
+                    <p class="verdict-sub text-danger">Cardiovascular anomalies detected. MRI Scan Analysis recommended and further clinical review advised.</p>
                 {% endif %}
             </div>
 
@@ -41,10 +41,10 @@
 
             <div class="patient-chips">
                 <div class="chip"><strong>Age</strong> {{ age }}</div>
-                <div class="chip"><strong>Sex</strong> {% if male == 1 %}M{% else %}F{% endif %}</div>
-                <div class="chip"><strong>BMI</strong> {{ BMI }}</div>
-                <div class="chip"><strong>HR</strong> {{ heartRate }}</div>
-                <div class="chip"><strong>Glu</strong> {{ glucose }}</div>
+                <div class="chip"><strong>Hypertension</strong> {% if prevalentHyp == 1 %}YES{% else %}NO{% endif %}</div>
+                <div class="chip"><strong>Diabeties</strong> {% if diabetes == 1 %}YES{% else %}NO{% endif %}</div>
+                <div class="chip"><strong>Cholesterol(mg/dL)</strong> {{ totChol }}</div>
+                <div class="chip"><strong>Cigarettes/Day</strong> {{ cigsPerDay }}</div>
             </div>
 
             <div class="card-bottom">
